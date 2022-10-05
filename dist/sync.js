@@ -486,7 +486,7 @@ var useLocalSingleton = function useLocalSingleton(_ref13) {
 
 exports.useLocalSingleton = useLocalSingleton;
 
-var useSync = function useSync(_ref17, remote) {
+var useSync = function useSync(remote, _ref17) {
   var _ref18 = _slicedToArray(_ref17, 2),
       state = _ref18[0],
       stateSet = _ref18[1];
@@ -506,7 +506,7 @@ var useSync = function useSync(_ref17, remote) {
 
 exports.useSync = useSync;
 
-var useSyncStorage = function useSyncStorage(lsKey, url) {
+var useSyncStorage = function useSyncStorage(remote, lsKey) {
   var defaultValue = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
 
   var _useLocalStorageState = (0, _useLocalStorageState4["default"])(lsKey, {
@@ -519,7 +519,7 @@ var useSyncStorage = function useSyncStorage(lsKey, url) {
       removeItem = _useLocalStorageState3.removeItem,
       isPersistent = _useLocalStorageState3.isPersistent;
 
-  return _objectSpread(_objectSpread({}, useSync([state, stateSet], useRemote(url))), {}, {
+  return _objectSpread(_objectSpread({}, useSync(remote, [state, stateSet])), {}, {
     reset: removeItem,
     isPersistent: isPersistent
   });

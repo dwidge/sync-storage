@@ -127,14 +127,14 @@ export const useLocalSingleton = ([state, stateSet], { status = 'sync' } = {}) =
 	return { list, update, sync }
 }
 
-export const useSync = ([state, stateSet], remote) => {
+export const useSync = (remote, [state, stateSet]) => {
 	const useLocal = Array.isArray(state) ? useLocalList : useLocalSingleton
 
 	const { sync, ...local } = useLocal([state, stateSet])
 	return { ...local, sync: () => sync(remote) }
 }
 
-export const useSyncStorage = (lsKey, url, defaultValue = []) => {
+export const useSyncStorage = (remote, lsKey, defaultValue = []) => {
 	const [state, stateSet, { removeItem, isPersistent }] = useLocalStorageState(lsKey, { defaultValue })
-	return { ...useSync(([state, stateSet]), useRemote(url)), reset: removeItem, isPersistent }
+	return { ...useSync(remote, [state, stateSet]), reset: removeItem, isPersistent }
 }

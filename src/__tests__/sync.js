@@ -8,7 +8,7 @@ describe('useSync', () => {
 		const [local, localSet] = [[], jest.fn()]
 
 		expect(remote.list()).toEqual([{ id: 1 }])
-		const db = useSync([local, localSet], remote)
+		const db = useSync(remote, [local, localSet])
 		expect(db.list()).toEqual([])
 		await db.sync()
 		expect(localSet).toBeCalledWith([{ id: 1 }])
@@ -21,7 +21,7 @@ describe('useSync', () => {
 		const [local, localSet] = [[{ id: 1 }], jest.fn()]
 
 		expect(remote.list()).toEqual([])
-		const db = useSync([local, localSet], remote)
+		const db = useSync(remote, [local, localSet])
 		expect(db.list()).toEqual([{ id: 1 }])
 		await db.sync()
 		expect(localSet).toBeCalledWith([])
@@ -33,7 +33,7 @@ describe('useSync', () => {
 		}
 		const [local, localSet] = [[], jest.fn()]
 
-		const db = useSync([local, localSet], remote)
+		const db = useSync(remote, [local, localSet])
 		await db.create({ id: 1 })
 		expect(localSet).toBeCalledWith([{ id: 1, sync: 'create' }])
 	})
@@ -44,7 +44,7 @@ describe('useSync', () => {
 		}
 		const [local, localSet] = [[{ id: 1 }], jest.fn()]
 
-		const db = useSync([local, localSet], remote)
+		const db = useSync(remote, [local, localSet])
 		await db.update({ id: 1, a: 1 })
 		expect(localSet).toBeCalledWith([{ id: 1, a: 1, sync: 'update' }])
 	})
@@ -56,7 +56,7 @@ describe('useSync', () => {
 		}
 		const [local, localSet] = [[{ id: 1, sync: 'create' }], jest.fn()]
 
-		const db = useSync([local, localSet], remote)
+		const db = useSync(remote, [local, localSet])
 		await db.sync()
 		expect(localSet).toBeCalledWith([{ id: 1 }])
 		expect(remote.create).toBeCalledWith({ id: 1 })
@@ -77,7 +77,7 @@ describe('useSync', () => {
 			{ id: 4, sync: 'update', a: 1 },
 		], jest.fn()]
 
-		const db = useSync([local, localSet], remote)
+		const db = useSync(remote, [local, localSet])
 		await db.sync()
 		expect(remote.destroy).toBeCalledWith({ id: 2 })
 		expect(remote.create).toBeCalledWith({ id: 3 })
@@ -92,7 +92,7 @@ describe('useSync', () => {
 			{ id: 1, sync: 'create' },
 		], jest.fn()]
 
-		const db = useSync([local, localSet], remote)
+		const db = useSync(remote, [local, localSet])
 		await db.update({ id: 1, a: 1 })
 		expect(localSet).toBeCalledWith([{ id: 1, a: 1, sync: 'create' }])
 	})
@@ -104,7 +104,7 @@ describe('useSync', () => {
 			{ id: 1, sync: 'create' },
 		], jest.fn()]
 
-		const db = useSync([local, localSet], remote)
+		const db = useSync(remote, [local, localSet])
 		await db.destroy({ id: 1 })
 		expect(localSet).toBeCalledWith([])
 	})
@@ -116,7 +116,7 @@ describe('useSync', () => {
 			{ id: 1, sync: 'update' },
 		], jest.fn()]
 
-		const db = useSync([local, localSet], remote)
+		const db = useSync(remote, [local, localSet])
 		await db.destroy({ id: 1 })
 		expect(localSet).toBeCalledWith([{ id: 1, sync: 'destroy' }])
 	})
