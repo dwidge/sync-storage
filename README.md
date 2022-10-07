@@ -31,13 +31,11 @@ store.sync();
 
 ## custom remote
 
-- list()\*
+- list() - required
 - get({id,...})
 - create({...})
 - update({id,...})
 - destroy({id})
-
-* required
 
 # examples
 
